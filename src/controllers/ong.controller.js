@@ -57,8 +57,7 @@ const ongController = {
             const newOng = await ongService.create({ 
                 ...payload,
                 isActive: false,
-                phone: user.phone,
-                email: user.email,
+                phone: user.phone
             })
 
             await userOngService.create({
