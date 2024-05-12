@@ -1,6 +1,10 @@
 import { prisma } from '../../config/db-connect.js'
 
 const userService = {
+    getById: async (id) => {
+        return await prisma.user.findUnique({ where: { id }})
+    },
+
     getByEmail: async (email) => {
         return await prisma.user.findUnique({ where: { email: email }})
     },

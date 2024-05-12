@@ -6,7 +6,9 @@ const userCreateSchema = Joi.object({
     email: Joi.string().required(),
     cpf: Joi.string().required(),
     password: Joi.string().required(),
-    phone: Joi.string().required()
+    phone: Joi.string().required(),
+    createdAt: Joi.date().iso().allow(null),
+    updatedAt: Joi.date().iso().allow(null).default(null)
 })
 
 export { userCreateSchema }
