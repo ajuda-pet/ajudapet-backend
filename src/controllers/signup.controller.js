@@ -8,24 +8,24 @@ const signupController = {
             const { error, value: payload } = userCreateSchema.validate(request.body)
 
             if (error) {
-                return response.status(400).send({ success: false, message: error.details })
+                return response.status(200).send({ success: false, message: error.details })
             }
 
             const userByEmail = await userService.getByEmail(payload.email)
             const userByCpf = await userService.getByCpf(payload.cpf)
 
             if (userByEmail) {
-                return response.status(409).send({ success: false, message: 'Email already exist.'})
+                return response.status(200).send({ success: false, message: 'Usuário já existe.'})
             }
 
             if (userByCpf) {
-                return response.status(409).send({ success: false, message: 'Cpf already exist'})
+                return response.status(200).send({ success: false, message: 'CPF já está cadastrado.'})
             }
 
             const passwordHashed = await encryptPassword(payload.password)
             await userService.create({...payload, password: passwordHashed})
 
-            return response.status(201).send({ success: true, message: 'user created'})
+            return response.status(201).send({ success: true, message: 'Usuário criado com sucesso.'})
         }
 
         catch (error) {
