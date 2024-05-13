@@ -13,71 +13,30 @@ datasource db {
   url      = env("DEV_DATABASE_URL")
 }
 
-model User {
-  id         Int        @id @default(autoincrement())
-  email      String     @unique
-  firstName  String     @map("fisrt_name")
-  lastName   String     @map("last_name")
-  phone      String
-  password   String
-  cpf        String     @unique
-  createdAt  DateTime   @default(now())             @map("created_at")
-  updatedAt  DateTime?  @updatedAt                  @map("updated_at")
-
-  user_ong       UserOng[]
-  @@map(name: "users")
-}
-
-
-model Ong {
-  id          Int       @id                         @default(autoincrement())
-  name        String    @unique
-  description String
-  email       String    @unique
-  phone       String    @unique
-  isActive    Boolean   @default(false)             @map("is_active")
-  createdAt  DateTime   @default(now())             @map("created_at")
-  updatedAt  DateTime?  @updatedAt                 @map("updated_at")
-
-  units       Unit[]
-  user_ong       UserOng[]
-
-  @@map(name: "ongs")
-}
-
-
-model Unit {
-  id            Int       @id @default(autoincrement())
-  ong           Ong       @relation(fields: [ongId], references: [id])
-  ongId         Int       @map("ong_id")
+model Group {
+  id            Int        @id @default(autoincrement())
+  name          String     @unique
+  email         String     @unique
   description   String
-  number        Int
-  lat           Float
-  lon           Float
-  address       String
-  country       String    @default("BR")
-  city          String
-  postalCode    String    @default("postal_code")
-  createdAt     DateTime  @default(now())         @map("created_at")
-  updatedAt     DateTime?  @updatedAt             @map("updated_at")
+  phone         String
+  isActive      Boolean    @map("is_active")
+  password      String
+  cpf           String     @unique
+  createdAt     DateTime   @default(now())             @map("created_at")
+  updatedAt     DateTime?  @updatedAt                  @map("updated_at")
 
-  @@map(name: "units")
+
+  socialMedia SocialMedia[]
+  @@map(name: "groups")
 }
 
-enum Role {
-  OWNER
-  MEMBER
-}
+model SocialMedia {
+  id                    Int          @id                  @default(autoincrement())
+  group                 Group        @relation(fields: [groupId], references: [id])
+  groupId               Int          @map("group_id")
+  plataform             String                    
+  username              String
+  url                   String
 
-model UserOng {
-  id            Int       @id @default(autoincrement())
-  role          Role     
-  ong           Ong       @relation(fields: [ongId], references: [id])
-  ongId         Int       @map("ong_id")
-  user          User      @relation(fields: [userId], references: [id])
-  userId        Int       @map("user_id")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime?  @updatedAt     @map("updated_at")
-
-  @@map(name: "Users_ongs")
+  @@map(name: "social_media")
 }
