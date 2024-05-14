@@ -21,6 +21,8 @@ CREATE TABLE "social_media" (
     "plataform" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "url" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3),
 
     CONSTRAINT "social_media_pkey" PRIMARY KEY ("id")
 );
