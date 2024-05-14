@@ -41,6 +41,10 @@ const groupService = {
           where: { id },
           data: props
         })
+    },
+
+    delete: async (id) => {
+        return await prisma.group.delete({ where: { id }})
     }
 }
 

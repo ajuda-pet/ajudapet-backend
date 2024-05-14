@@ -69,6 +69,20 @@ const groupController = {
             return response.status(500).send({ success: false, message: 'Erro interno no servidor. 😿'})
         }
     },
+
+    delete: async (request, response) => {
+        try {
+            const { id } = request.group || ''
+            await groupService.delete(id)
+
+            return response.status(204).send({ success: true, message: 'Grupo deletado com sucesso. 😸'})
+        }
+
+        catch (error) {
+            console.error(error)
+            return response.status(500).send({ success: false, message: 'Erro interno no servidor. 😿'})
+        }
+    }
 }
 
 export default groupController
