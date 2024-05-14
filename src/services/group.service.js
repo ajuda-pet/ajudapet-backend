@@ -1,12 +1,23 @@
 import { prisma } from '../../config/db-connect.js'
 
 const groupService = {
-    get: async () => {
-        return await prisma.group.findMany()
+    get: async (skip = 1, take = 100) => {
+        return await prisma.group.findMany({ 
+            include: {
+                socialMedia: true
+            },
+            skip, 
+            take 
+        })
     },
 
     getById: async(id) => {
-        return await prisma.group.findUnique({ where: { id: parseInt(id, 10) }})
+        return await prisma.group.findUnique({ 
+            where: { id: parseInt(id) },
+            include: {
+                socialMedia: true
+            }
+        })
     },
 
     create: async (group) => {
@@ -27,7 +38,7 @@ const groupService = {
 
     updatedById: async (id, props) => {
         return await prisma.group.update({ 
-          where: { id: parseInt(id, 10) },
+          where: { id },
           data: props
         })
     }
