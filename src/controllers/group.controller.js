@@ -72,7 +72,7 @@ const groupController = {
 
     delete: async (request, response) => {
         try {
-            const { id } = request.group || ''
+            const { id } = request.group
             await groupService.delete(id)
 
             return response.status(204).send({ success: true, message: 'Grupo deletado com sucesso. 😸'})
