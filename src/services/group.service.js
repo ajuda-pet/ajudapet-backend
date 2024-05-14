@@ -27,7 +27,7 @@ const groupService = {
 
     updatedById: async (id, props) => {
       return await prisma.group.update({ 
-        where: { id },
+        where: { id: parseInt(id, 10) },
         data: props
       })
     }
