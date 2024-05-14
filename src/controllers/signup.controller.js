@@ -1,36 +1,43 @@
 import { encryptPassword } from '../libraries/password-crypto.js'
-import { userCreateSchema } from '../schemas/user.schema.js'
-import userService from '../services/user.service.js'
+import groupService from '../services/group.service.js'
+import groupCreateSchema from '../schemas/group.schema.js'
 
 const signupController = {
     create: async (request, response) =>  {
         try {
-            const { error, value: payload } = userCreateSchema.validate(request.body)
+            const { error, value: payload } = groupCreateSchema.validate(request.body)
 
             if (error) {
                 return response.status(400).send({ success: false, message: error.details })
             }
 
-            const userByEmail = await userService.getByEmail(payload.email)
-            const userByCpf = await userService.getByCpf(payload.cpf)
-
-            if (userByEmail) {
-                return response.status(409).send({ success: false, message: 'Usuário já existe.'})
+            const [groupByEmail, groupByCpf, groupByName] = await Promise.all([
+                groupService.getByEmail(payload.email),
+                groupService.getByCpf(payload.cpf),
+                groupService.getByName(payload.name)
+            ])
+            
+            if (groupByEmail) {
+                return response.status(409).send({ success: false, message: 'Email já cadastrado. 😿'})
             }
 
-            if (userByCpf) {
-                return response.status(409).send({ success: false, message: 'CPF já está cadastrado.'})
+            if (groupByCpf) {
+                return response.status(409).send({ success: false, message: 'CPF já cadastrado. 😿'})
+            }
+
+            if (groupByName) {
+                return response.status(409).send({ success: false, message: 'Nome de grupo já cadastrado. 😿'})
             }
 
             const passwordHashed = await encryptPassword(payload.password)
-            await userService.create({...payload, password: passwordHashed})
+            await groupService.create({...payload, password: passwordHashed, isActive: false})
 
-            return response.status(201).send({ success: true, message: 'Usuário criado com sucesso.'})
+            return response.status(201).send({ success: true, message: 'Grupo criado com sucesso. 😸'})
         }
 
         catch (error) {
             console.error(error)
-            return response.status(500).send({ success: false, message: 'Internal server error'})
+            return response.status(500).send({ success: false, message: 'Erro interno no servidor. 😿'})
         }
     }
 }
