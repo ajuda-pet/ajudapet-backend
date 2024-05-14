@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DEV_DATABASE_URL")
+}
+
+model Group {
+  id            Int        @id @default(autoincrement())
+  name          String     @unique
+  email         String     @unique
+  description   String
+  phone         String
+  isActive      Boolean    @map("is_active")
+  password      String
+  cpf           String     @unique
+  createdAt     DateTime   @default(now())             @map("created_at")
+  updatedAt     DateTime?  @updatedAt                  @map("updated_at")
+
+
+  socialMedia SocialMedia[]
+  @@map(name: "groups")
+}
+
+enum socialMediaEnum {
+  INSTAGRAM
+  WHATSAPP
+  FACEBOOK
+}
+
+model SocialMedia {
+  id                    Int        @id                  @default(autoincrement())
+  group                 Group      @relation(fields: [groupId], references: [id])
+  groupId               Int        @map("group_id")
+  plataform             socialMediaEnum                    
+  username              String
+  url                   String
+  createdAt             DateTime             @default(now())     @map("created_at")
+  updatedAt             DateTime?            @updatedAt          @map("updated_at")
+
+  @@map(name: "social_media")
+}
