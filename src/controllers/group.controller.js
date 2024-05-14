@@ -59,8 +59,7 @@ const groupController = {
                 return response.status(409).send({ success: false, message: 'Nome de grupo já cadastrado. 😿' })
             }
 
-            const updates = groupService.updatedById(group.id, payload)
-
+            const updates = await groupService.updatedById(group.id, payload)
 
             return response.status(200).send({ success: true, info: { ...group, ...updates }, message: 'Query executada com sucesso. 😸'})
         }
