@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import userService from '../../services/user.service.js'
+import groupService from '../../services/group.service.js'
 
 const authorizationMiddleware = (request, response, next) => {
     const secretKey = process.env.JWT_SECRET_KEY
@@ -14,13 +14,13 @@ const authorizationMiddleware = (request, response, next) => {
             return response.status(403).send({ success: false, message: error })
         }
 
-        const user = await userService.getById(decoded.userId)
+        const group = await groupService.getById(decoded.groupId)
 
-        if (!user) {
+        if (!group) {
             return response.status(403).send({ success: false, message: 'Invalid token' })
         }
 
-        request.user = user
+        request.group = group
         return next()
     })
 }
