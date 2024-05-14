@@ -10,4 +10,10 @@ const groupCreateSchema = Joi.object({
     isActive: Joi.boolean(),
 })
 
-export default groupCreateSchema
+
+const groupUpdateSchema = Joi.object({
+    name: Joi.string(),
+    description: Joi.string()
+})
+
+export { groupCreateSchema, groupUpdateSchema }

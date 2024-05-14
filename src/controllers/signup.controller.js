@@ -1,6 +1,6 @@
 import { encryptPassword } from '../libraries/password-crypto.js'
+import { groupCreateSchema } from '../schemas/group.schema.js'
 import groupService from '../services/group.service.js'
-import groupCreateSchema from '../schemas/group.schema.js'
 
 const signupController = {
     create: async (request, response) =>  {
