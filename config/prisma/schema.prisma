@@ -97,3 +97,40 @@ model AdoptionPoint {
 
   @@map(name: "adoption_points")
 }
+
+enum agePetEnum { 
+  BABY 
+  ADULT 
+  OLD 
+}
+enum sizePetEnum { 
+  SMALL 
+  MEDIUM 
+  LARGE
+}
+
+enum genderPetEnum { 
+  MALE 
+  FEMALE 
+}
+
+enum speciesPetEnum { 
+  CAT 
+  DOG 
+}
+
+model Pets {
+  id                      Int               @id  @default(autoincrement())
+  name                    String
+  description             String?
+  availabilityAdoption    Boolean           @map("availibility_adotpion")
+  age                     agePetEnum
+  size                    sizePetEnum             
+  gender                  genderPetEnum
+  species                 speciesPetEnum  
+  picture                 Bytes
+  createdAt                 DateTime             @default(now())     @map("created_at")
+  updatedAt                 DateTime?            @updatedAt          @map("updated_at")
+
+  @@map(name: "pets")
+}
