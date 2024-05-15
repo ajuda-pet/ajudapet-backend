@@ -14,19 +14,20 @@ datasource db {
 }
 
 model Group {
-  id            Int        @id @default(autoincrement())
-  name          String     @unique
-  email         String     @unique
-  description   String
-  phone         String
-  isActive      Boolean    @map("is_active")
-  password      String
-  cpf           String     @unique
-  createdAt     DateTime   @default(now())             @map("created_at")
-  updatedAt     DateTime?  @updatedAt                  @map("updated_at")
+  id              Int        @id @default(autoincrement())
+  name            String     @unique
+  email           String     @unique
+  description     String
+  phone           String
+  isActive        Boolean    @map("is_active")
+  password        String
+  cpf             String     @unique
+  createdAt       DateTime   @default(now())             @map("created_at")
+  updatedAt       DateTime?  @updatedAt                  @map("updated_at")
 
 
-  socialMedia SocialMedia[]
+  socialMedia     SocialMedia[]
+  adoptionPoints  AdoptionPoint[]
   @@map(name: "groups")
 }
 
@@ -47,4 +48,52 @@ model SocialMedia {
   updatedAt             DateTime?            @updatedAt          @map("updated_at")
 
   @@map(name: "social_media")
+}
+
+enum addressStateEnum {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PR
+  PB
+  PA
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SE
+  SP
+  TO
+}
+
+model AdoptionPoint {
+  id                        Int                   @id         @default(autoincrement())
+  name                      String                @unique
+  description               String?                 
+  group                     Group                 @relation(fields: [groupId], references: [id])
+  groupId                   Int                   @map("group_id")
+  postalCode                String                @map("postal_code")
+  addressState              addressStateEnum      @map("address_state")
+  addressCity               String                @map("address_city")
+  addressNumber             Int                   @map("address_number")
+  addressCountry            String                @map("address_country")
+  observation               String?                
+  createdAt                 DateTime             @default(now())     @map("created_at")
+  updatedAt                 DateTime?            @updatedAt          @map("updated_at")
+
+  @@map(name: "adoption_points")
 }
