@@ -1,7 +1,7 @@
 import { prisma } from '../../config/db-connect.js'
 
 const groupService = {
-    get: async (skip = 1, take = 100) => {
+    get: async (skip = 0, take = 100) => {
         return await prisma.group.findMany({ 
             include: {
                 socialMedia: true

@@ -60,8 +60,9 @@ const groupController = {
             }
 
             const updates = await groupService.updatedById(group.id, payload)
+            const newGroup = { ...group, ...updates }
 
-            return response.status(200).send({ success: true, info: { ...group, ...updates }, message: 'Query executada com sucesso. 😸'})
+            return response.status(200).send({ success: true, info: { group: newGroup }, message: 'Query executada com sucesso. 😸'})
         }
 
         catch (error) {
