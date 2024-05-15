@@ -95,6 +95,7 @@ model AdoptionPoint {
   createdAt                 DateTime             @default(now())     @map("created_at")
   updatedAt                 DateTime?            @updatedAt          @map("updated_at")
 
+  pets                      Pet[]
   @@map(name: "adoption_points")
 }
 
@@ -121,6 +122,8 @@ enum speciesPetEnum {
 
 model Pet {
   id                      Int               @id  @default(autoincrement())
+  adoptionPoint           AdoptionPoint     @relation(fields: [adoptionPointId], references: [id])
+  adoptionPointId         Int           @map("adoption_point_id")
   name                    String
   description             String?
   availabilityAdoption    Boolean           @map("availibility_adotpion")
