@@ -93,7 +93,7 @@ const adoptionPointController = {
             }
 
             const updates = adoptionPointService.updateById(adoptionId, payload)
-            const newAdoptionPoint = { ...adoptionPoint, ...updates }
+            const newAdoptionPoint = { ...adoptionPointByGroupId, ...updates }
 
             return response.status(200).send({ success: true, info: { adoptionPoint: newAdoptionPoint }, message: `Ponto de adoção atualizado. ${responseEmoji.success}`})
         }

@@ -33,7 +33,14 @@ const adoptionPointService = {
     },
 
     getByName: async(name) => {
-        return await prisma.adoptionPoint.findUnique({ where: { name }})
+        return await prisma.adoptionPoint.findFirst({ 
+            where: { 
+                name: {
+                    contains: name,
+                    mode: 'insensitive'
+                } 
+            }
+        })
     }
 
 }
