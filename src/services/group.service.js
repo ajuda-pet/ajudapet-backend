@@ -16,7 +16,8 @@ const groupService = {
         return await prisma.group.findUnique({ 
             where: { id: parseInt(id) },
             include: {
-                socialMedia: true
+                socialMedia: true,
+                adoptionPoints: true
             }
         })
     },
