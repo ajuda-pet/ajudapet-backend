@@ -24,9 +24,9 @@ const signinController = {
             }
 
             const secretKey = process.env.JWT_SECRET_KEY
-            const token = jwt.sign({ groupId: group.id }, secretKey, { expiresIn: '72h' });
+            const token = jwt.sign({ groupId: group.id }, secretKey, { expiresIn: '72h' })
 
-            return response.status(200).send({ success: true, info: { token }, message: 'Grupo logado com sucesso. 😸' })
+            return response.status(200).send({ success: true, info: { token, group }, message: 'Grupo logado com sucesso. 😸' })
         }
 
         catch (error) {
