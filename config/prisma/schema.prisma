@@ -96,5 +96,45 @@ model AdoptionPoint {
   createdAt                 DateTime             @default(now())     @map("created_at")
   updatedAt                 DateTime?            @updatedAt          @map("updated_at")
 
+  pets                      Pet[]
   @@map(name: "adoption_points")
+}
+
+enum agePetEnum { 
+  BABY 
+  ADULT 
+  OLD 
+}
+enum sizePetEnum { 
+  SMALL 
+  MEDIUM 
+  LARGE
+}
+
+enum genderPetEnum { 
+  MALE 
+  FEMALE 
+}
+
+enum speciesPetEnum { 
+  CAT 
+  DOG 
+}
+
+model Pet {
+  id                      Int               @id  @default(autoincrement())
+  adoptionPoint           AdoptionPoint     @relation(fields: [adoptionPointId], references: [id])
+  adoptionPointId         Int           @map("adoption_point_id")
+  name                    String
+  description             String?
+  availabilityAdoption    Boolean           @map("availibility_adotpion")
+  age                     agePetEnum
+  size                    sizePetEnum             
+  gender                  genderPetEnum
+  species                 speciesPetEnum  
+  picture                 String
+  createdAt               DateTime             @default(now())     @map("created_at")
+  updatedAt               DateTime?            @updatedAt          @map("updated_at")
+
+  @@map(name: "pets")
 }
