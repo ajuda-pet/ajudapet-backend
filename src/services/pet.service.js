@@ -30,11 +30,11 @@ const petService = {
     },
 
     getByGroupIdAndPetId: async (groupId, petId) => {
-        return await prisma.pet.findUnique({
+        return await prisma.pet.findFirst({
             where: {
                 id: parseInt(petId),
                 adoptionPoint: {
-                    id: parseInt(groupId)
+                    groupId: parseInt(groupId)
                 }
             }
         })

@@ -97,7 +97,7 @@ const petController = {
             if (!speciesPetEnum[species]) return response.status(400).send({ success: false, message: `Espécie inválida. ${responseEmoji.fail}` })
 
             const { id: adoptionPointId } = adoptionPoint
-            const pet = await petService.create({ ...payload, adoptionPointId, availabilityAdoption: true })
+            const pet = await petService.create({ ...payload, adoptionPointId })
 
             return response.status(201).send({ success: true, info: { pet }, messasge: `Pet created. ${responseEmoji.success}`})
         }
@@ -120,6 +120,7 @@ const petController = {
             }
 
             const pet = await petService.getByGroupIdAndPetId(groupId, petId)
+            console.log(pet)
 
             if (!pet) {
                 return response.status(404).send({ success: false, message: `Pet não encontrado. ${responseEmoji.fail}`})
