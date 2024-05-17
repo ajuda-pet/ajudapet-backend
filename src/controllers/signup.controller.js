@@ -30,7 +30,7 @@ const signupController = {
             }
 
             const passwordHashed = await encryptPassword(payload.password)
-            await groupService.create({...payload, password: passwordHashed, isActive: false})
+            await groupService.create({...payload, password: passwordHashed, enable: false})
 
             return response.status(201).send({ success: true, message: 'Grupo criado com sucesso. 😸'})
         }
