@@ -27,7 +27,13 @@ const groupService = {
     },
 
     getByEmail: async(email) => {
-        return await prisma.group.findUnique({ where: {email} })
+        return await prisma.group.findUnique({ 
+            where: { email },
+            include: {
+                socialMedia: true,
+                adoptionPoints: true
+            } 
+        })
     },
 
     getByName: async(name) => {
