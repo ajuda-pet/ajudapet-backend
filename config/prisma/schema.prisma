@@ -29,6 +29,7 @@ model Group {
 
   socialMedia     SocialMedia[]
   adoptionPoints  AdoptionPoint[]
+  invites         Invite[]
   @@map(name: "groups")
 }
 
@@ -139,4 +140,15 @@ model Pet {
   updatedAt               DateTime?           @updatedAt          @map("updated_at")
 
   @@map(name: "pets")
+}
+
+model Invite {
+  id          Int        @id @default(autoincrement())
+  host        Group?      @relation(fields: [hostId], references: [id])
+  hostId      Int        @map("host_id")
+  guestId     Int        @map("guest_id")   
+  createdAt   DateTime   @default(now())     @map("created_at")
+  updatedAt   DateTime?  @updatedAt          @map("updated_at")
+
+  @@map(name: "invites")
 }
