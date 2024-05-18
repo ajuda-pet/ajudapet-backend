@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import groupService from '../../services/group.service.js'
+import groupService from '../../../services/group.service.js'
 
 const authorizationMiddleware = (request, response, next) => {
     const secretKey = process.env.JWT_SECRET_KEY
