@@ -55,7 +55,8 @@ const pixController = {
 
     update: async (request, response) => {
         try {
-            const { id, groupId } = request.params;
+            const { groupId } = request.group;
+            const { id } = request.params;
             const { error, value: payload } = pixUpdateSchema.validate(request.body);
 
             if (error) {
@@ -78,7 +79,8 @@ const pixController = {
 
     delete: async (request, response) => {
         try {
-            const { id, groupId } = request.params;
+            const { groupId } = request.group;
+            const { id } = request.params;
             const existingPix = await pixService.getByIdAndGroupId(id, groupId);
 
             if (!existingPix) {
