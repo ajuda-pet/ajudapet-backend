@@ -50,3 +50,5 @@ const pixService = {
         });
     },
 };
+
+export default pixService;
