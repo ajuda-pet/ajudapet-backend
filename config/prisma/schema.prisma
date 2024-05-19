@@ -29,11 +29,8 @@ model Group {
 
   socialMedia     SocialMedia[]
   adoptionPoints  AdoptionPoint[]
-<<<<<<< HEAD
   pix             Pix[]
-=======
   invites         Invite[]
->>>>>>> dev
   @@map(name: "groups")
 }
 
