@@ -32,8 +32,8 @@ const pixController = {
 
     create: async (request, response) => {
         try {
+            const { id: group_id } = request.group
             const { error, value: payload } = pixCreateSchema.validate(request.body);
-            const { group_id } = request.params;
 
             if (error) {
                 return response.status(400).send({ success: false, message: error.details });

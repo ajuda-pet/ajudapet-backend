@@ -5,7 +5,8 @@ const groupService = {
         return await prisma.group.findMany({ 
             include: {
                 socialMedia: true,
-                adoptionPoints: true
+                adoptionPoints: true,
+                pix: true
             },
             skip, 
             take 
@@ -17,7 +18,8 @@ const groupService = {
             where: { id: parseInt(id) },
             include: {
                 socialMedia: true,
-                adoptionPoints: true
+                adoptionPoints: true,
+                pix: true
             }
         })
     },
@@ -31,7 +33,8 @@ const groupService = {
             where: { email },
             include: {
                 socialMedia: true,
-                adoptionPoints: true
+                adoptionPoints: true,
+                pix: true
             } 
         })
     },
