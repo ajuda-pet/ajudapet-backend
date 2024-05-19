@@ -7,8 +7,8 @@ const groupCreateSchema = Joi.object({
     phone: Joi.string().required(),
     password: Joi.string().required(),
     cpf: Joi.string().required(),
-    isActive: Joi.boolean(),
-    picture: Joi.string()
+    enable: Joi.boolean(),
+    picture: Joi.string(),
 })
 
 
@@ -18,7 +18,8 @@ const groupUpdateSchema = Joi.object({
     picture: Joi.string(),
     email: Joi.string(),
     phone: Joi.string(),
-    cpf: Joi.string(),
+    enable: Joi.boolean(),
+    cpf: Joi.string()
 })
 
 export { groupCreateSchema, groupUpdateSchema }

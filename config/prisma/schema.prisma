@@ -19,7 +19,7 @@ model Group {
   email           String     @unique
   description     String
   phone           String
-  isActive        Boolean    @map("is_active")
+  enable          Boolean    @default(false)    
   password        String
   cpf             String     @unique
   picture         String?
@@ -29,7 +29,11 @@ model Group {
 
   socialMedia     SocialMedia[]
   adoptionPoints  AdoptionPoint[]
+<<<<<<< HEAD
   pix             Pix[]
+=======
+  invites         Invite[]
+>>>>>>> dev
   @@map(name: "groups")
 }
 
@@ -44,7 +48,7 @@ model SocialMedia {
   group                 Group      @relation(fields: [groupId], references: [id])
   groupId               Int        @map("group_id")
   plataform             socialMediaEnum                    
-  username              String
+  account               String
   url                   String
   createdAt             DateTime             @default(now())     @map("created_at")
   updatedAt             DateTime?            @updatedAt          @map("updated_at")
@@ -88,14 +92,16 @@ model AdoptionPoint {
   description               String?                 
   group                     Group                 @relation(fields: [groupId], references: [id])
   groupId                   Int                   @map("group_id")
+  enable                    Boolean               @default(true)
   postalCode                String                @map("postal_code")
   addressState              addressStateEnum      @map("address_state")
   addressCity               String                @map("address_city")
   addressNumber             Int                   @map("address_number")
+  addressNeighborhood       String                @map("address_neighborhood")
   addressCountry            String                @map("address_country")
   observation               String?                
-  createdAt                 DateTime             @default(now())     @map("created_at")
-  updatedAt                 DateTime?            @updatedAt          @map("updated_at")
+  createdAt                 DateTime              @default(now())     @map("created_at")
+  updatedAt                 DateTime?             @updatedAt          @map("updated_at")
 
   pets                      Pet[]
   @@map(name: "adoption_points")
@@ -123,19 +129,19 @@ enum speciesPetEnum {
 }
 
 model Pet {
-  id                      Int               @id  @default(autoincrement())
-  adoptionPoint           AdoptionPoint     @relation(fields: [adoptionPointId], references: [id])
-  adoptionPointId         Int           @map("adoption_point_id")
+  id                      Int                 @id  @default(autoincrement())
+  adoptionPoint           AdoptionPoint       @relation(fields: [adoptionPointId], references: [id])
+  adoptionPointId         Int                 @map("adoption_point_id")
   name                    String
   description             String?
-  availabilityAdoption    Boolean           @map("availibility_adotpion")
+  enable                  Boolean             @default(true)
   age                     agePetEnum
   size                    sizePetEnum             
   gender                  genderPetEnum
   species                 speciesPetEnum  
   picture                 String
-  createdAt               DateTime             @default(now())     @map("created_at")
-  updatedAt               DateTime?            @updatedAt          @map("updated_at")
+  createdAt               DateTime            @default(now())     @map("created_at")
+  updatedAt               DateTime?           @updatedAt          @map("updated_at")
 
   @@map(name: "pets")
 }
@@ -156,4 +162,15 @@ model Pix {
   type                    pixTypeEnum
   createdAt               DateTime             @default(now())     @map("created_at")
   updatedAt               DateTime?            @updatedAt          @map("updated_at")
+}
+
+model Invite {
+  id          Int        @id @default(autoincrement())
+  host        Group?      @relation(fields: [hostId], references: [id])
+  hostId      Int        @map("host_id")
+  guestId     Int        @map("guest_id")   
+  createdAt   DateTime   @default(now())     @map("created_at")
+  updatedAt   DateTime?  @updatedAt          @map("updated_at")
+
+  @@map(name: "invites")
 }

@@ -8,13 +8,14 @@ const petCreateSchema = Joi.object({
     size: Joi.string().required(),
     gender: Joi.string().required(),
     species: Joi.string().required(),
-    picture: Joi.string().required()
+    picture: Joi.string().required(),
+    enable: Joi.boolean(),
 })
 
 const petUpdateSchema = Joi.object({
     name: Joi.string(),
     adoptionPointId: Joi.number(),
-    availibilityAdoptionId: Joi.number(),
+    enable: Joi.boolean(),
     description: Joi.string(),
     age: Joi.string(),
     size: Joi.string(),

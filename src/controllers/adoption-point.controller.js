@@ -84,7 +84,7 @@ const adoptionPointController = {
                 return response.status(404).send({ success: false, message: `Ponto de adoção não encontrado. ${responseEmoji.fail}` })
             }
 
-            if (adoptionPointByName) {
+            if (payload.name && adoptionPointByName) {
                 return response.status(409).send({ success: false, message: `Nome de ponto de doação já existente. ${responseEmoji.fail}` })
             }
 
