@@ -9,7 +9,6 @@ const pixCreateSchema = Joi.object({
 const pixUpdateSchema = Joi.object({
     key: Joi.string(),
     type: Joi.string(),
-    group_id: Joi.number().integer(),
     qrcode: Joi.string(),
 })
 
