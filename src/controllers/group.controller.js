@@ -5,6 +5,11 @@ const groupController = {
     get: async (request, response) => {
         try {
             const groups = await groupService.get()
+
+            groups.forEach(group => {
+                group.pix = group.pix[0]
+            })
+
             return response.status(200).send({ success: true, info: { groups }, message: 'Query executada com sucesso. 😸'})
         }
 
@@ -23,6 +28,7 @@ const groupController = {
                 return response.status(404).send({ success: false, message: 'Grupo não encontrado. 😿'})
             }
 
+            group.pix = group.pix[0]
             return response.status(200).send({ succes: true, info: { group }, message: 'Query executado com sucesso. 😸'})
         }
 
@@ -61,6 +67,8 @@ const groupController = {
 
             const updates = await groupService.updatedById(group.id, payload)
             const newGroup = { ...group, ...updates }
+
+            newGroup.pix = newGroup.pix[0]
 
             return response.status(200).send({ success: true, info: { group: newGroup }, message: 'Query executada com sucesso. 😸'})
         }
