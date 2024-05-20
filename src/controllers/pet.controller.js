@@ -120,7 +120,6 @@ const petController = {
             }
 
             const pet = await petService.getByGroupIdAndPetId(groupId, petId)
-            console.log(pet)
 
             if (!pet) {
                 return response.status(404).send({ success: false, message: `Pet não encontrado. ${responseEmoji.fail}`})

@@ -8,11 +8,12 @@ import noAuthAdoptionPointRouter from './noauth/adoption-point.router.js'
 import authAdoptionPointRouter from './auth/adoption-points.router.js'
 import noAuthPetRouter from './noauth/pets.router.js'
 import authPetRouter from './auth/pet.router.js'
+import noAuthPixRouter from './noauth/pix.router.js'
 
 const routes = (app) => {
     app.use(express.json())
 
-    app.use('/noauth', signupRouter, signinRouter, noAuthGroupRouter, noAuthAdoptionPointRouter, noAuthPetRouter)
+    app.use('/noauth', signupRouter, signinRouter, noAuthGroupRouter, noAuthAdoptionPointRouter, noAuthPetRouter, noAuthPixRouter)
     app.use('/auth', authorizationMiddleware, authGroupRouter, authAdoptionPointRouter, authPetRouter)
 }
 

@@ -29,6 +29,7 @@ model Group {
 
   socialMedia     SocialMedia[]
   adoptionPoints  AdoptionPoint[]
+  pix             Pix[]
   invites         Invite[]
   @@map(name: "groups")
 }
@@ -140,6 +141,26 @@ model Pet {
   updatedAt               DateTime?           @updatedAt          @map("updated_at")
 
   @@map(name: "pets")
+}
+
+enum pixTypeEnum {
+  EMAIL
+  CPF
+  PHONE
+  CNPJ
+}
+
+model Pix {
+  id                      Int               @id  @default(autoincrement())
+  group                   Group             @relation(fields: [groupId], references: [id])
+  groupId                 Int               @map("group_id")
+  key                     String
+  qrcode                  String
+  type                    pixTypeEnum
+  createdAt               DateTime             @default(now())     @map("created_at")
+  updatedAt               DateTime?            @updatedAt          @map("updated_at")
+
+  @@map(name: "pix")
 }
 
 model Invite {
