@@ -1,54 +1,58 @@
 import { prisma } from '../../config/db-connect.js';
 
 const pixService = {
-    getByGroupId: async (group_id, skip = 0, take = 100) => {
-        return await prisma.pix.findMany({
-            where: { group_id: parseInt(group_id) },
+    get: async () => {
+        return await prisma.pix.findMany()
+    },
+
+    getById: async (pixId) => {
+        return await prisma.pix.findUnique({ where: { id: parseInt(pixId) }})
+    },
+
+
+    getByGroupId: async (groupId, skip = 0, take = 100) => {
+        return await prisma.pix.findFirst({
+            where: { groupId: parseInt(groupId) },
             skip,
             take,
         });
     },
 
-    getByIdAndGroupId: async (id, group_id) => {
+    getByIdAndGroupId: async (id, groupId) => {
         return await prisma.pix.findFirst({
             where: {
                 id: parseInt(id),
-                group_id: parseInt(group_id),
+                groupId: parseInt(groupId),
             },
         });
     },
 
-    getByKeyAndGroupId: async (key, group_id) => {
+    getByKeyAndGroupId: async (key, groupId) => {
         return await prisma.pix.findFirst({
             where: {
                 key,
-                group_id: parseInt(group_id),
+                groupId: parseInt(groupId),
             },
         });
     },
 
     create: async (pixData) => {
-        return await prisma.pix.create({ data: pixData });
+        return await prisma.pix.create({ data: pixData })
     },
 
-    updateByIdAndGroupId: async (id, group_id, data) => {
+    updateByIdAndGroupId: async (id, groupId, data) => {
         return await prisma.pix.updateMany({
             where: {
                 id: parseInt(id),
-                group_id: parseInt(group_id),
+                groupId: parseInt(groupId),
             },
             data,
         });
     },
 
-    deleteByIdAndGroupId: async (id, group_id) => {
-        return await prisma.pix.deleteMany({
-            where: {
-                id: parseInt(id),
-                group_id: parseInt(group_id),
-            },
-        });
-    },
-};
+    deleteById: async (id) => {
+        return await prisma.pix.delete({ where: { id: parseInt(id) }})
+    }
+}
 
-export default pixService;
+export default pixService
