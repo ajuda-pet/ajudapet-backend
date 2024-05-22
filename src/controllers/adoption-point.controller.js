@@ -123,6 +123,20 @@ const adoptionPointController = {
             console.error(error)
             return response.status(500).send({ success: false, message: `Erro interno no servidor. ${responseEmoji.fail}`})
         }
+    },
+
+    getByGroupToken: async (request, response) => {
+        try {
+            const { group } = request
+            const adoptionPoints = group.adoptionPoints 
+
+            return response.status(200).send({ success: true, info: { adoptionPoints }, message: `Pontos de Adoção listado com sucesso. ${responseEmoji.success}`})
+        }
+
+        catch (error) {
+            console.error(error)
+            return response.status(500).send({ success: false, message: `Erro interno no servidor. ${responseEmoji.fail}`})
+        }
     }
 }
 
