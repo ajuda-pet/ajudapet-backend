@@ -24,4 +24,6 @@ const petUpdateSchema = Joi.object({
     picture: Joi.string()
 })
 
-export { petCreateSchema, petUpdateSchema }
+const petQueryParamsSchema = petUpdateSchema
+
+export { petCreateSchema, petUpdateSchema, petQueryParamsSchema }
