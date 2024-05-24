@@ -7,6 +7,7 @@ const adoptionPointCreateSchema = Joi.object({
     addressState: Joi.string().required(),
     addressNeighborhood: Joi.string().required(),
     addressCity: Joi.string().required(),
+    addressStreet: Joi.string().required(),
     addressNumber: Joi.number().required(),
     addressCountry: Joi.string().required(),
     enable: Joi.boolean(),
@@ -21,6 +22,7 @@ const adoptionPointUpdateSchema = Joi.object({
     addressState: Joi.string(),
     addressNeighborhood: Joi.string(),
     addressCity: Joi.string(),
+    addressStreet: Joi.string(),
     addressNumber: Joi.string(),
     addressCountry: Joi.number(),
     observation: Joi.string()
