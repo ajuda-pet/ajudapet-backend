@@ -1,5 +1,5 @@
 import responseEmoji from '../libraries/response-emoji.js'
-import { petCreateSchema, petUpdateSchema } from '../schemas/pet.schema.js'
+import { petCreateSchema, petQueryParamsSchema, petUpdateSchema } from '../schemas/pet.schema.js'
 import adoptionPointService from '../services/adoption-point.service.js'
 import groupService from '../services/group.service.js'
 import petService from '../services/pet.service.js'
@@ -8,6 +8,25 @@ import { sizePetEnum, agePetEnum, speciesPetEnum , genderPetEnum } from '@prisma
 const petController = {
     getAll: async (request, response) => {
         try {
+            const { query } = request
+
+            if (Object.keys(query).length) {
+                const { error, value: params } = petQueryParamsSchema.validate(query)
+
+                if (error) {
+                    return response.status(400).send({ success: false, messsage: `Query params é inválido ${responseEmoji.fail}`})
+                }
+
+                if (params.size && !sizePetEnum[params.size]) return response.status(400).send({ success: false, message: `Tamanho inválido. ${responseEmoji.fail}` })
+                if (params.gender && !genderPetEnum[params.gender]) return response.status(400).send({ success: false, message: `Genero inválido. ${responseEmoji.fail}` })
+                if (params.age && !agePetEnum[params.age]) return response.status(400).send({ success: false, message: `Faixa de idade inválida. ${responseEmoji.fail}` })
+                if (params.species && !speciesPetEnum[params.species]) return response.status(400).send({ success: false, message: `Espécie inválida. ${responseEmoji.fail}` })
+
+                
+                const pets = await petService.getByParams(params)
+                return response.status(200).send({ success: true, info: { pets }, message: `Query executada. ${responseEmoji.success}`})
+            }
+
             const pets = await petService.get()
             return response.status(200).send({ success: true, info: { pets }, message: `Query executada. ${responseEmoji.success}`})
         }

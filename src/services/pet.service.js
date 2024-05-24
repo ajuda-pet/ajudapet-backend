@@ -2,7 +2,21 @@ import { prisma } from './../../config/db-connect.js'
 
 const petService = {
     get:async(skip = 0, take = 100) => {
-        return await prisma.pet.findMany({skip, take})
+        const pets = await prisma.pet.findMany({skip, take})
+
+        if (!pets || !pets.length) {
+            return []
+        }
+
+        for (const pet of pets) {
+            const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId } })
+            const group = await prisma.group.findFirst({ where: { id: adoptionPoint.groupId } })
+
+            pet.adoptionPoint = adoptionPoint
+            pet.group = group
+        }
+
+        return pets
     },
 
     getByAdoptionPointId: async(adoptionPointId, skip = 0, take = 100) => {
@@ -26,7 +40,16 @@ const petService = {
     },
 
     getById: async(id) => {
-        return await prisma.pet.findUnique({ where: {id: parseInt(id)} })
+        const pet = await prisma.pet.findUnique({ where: { id: parseInt(id) }})
+
+        if (!pet) {
+            return
+        }
+
+        const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId }})
+        const group = await prisma.group.findFirst({ where: { id: adoptionPoint.groupId }})
+
+        return { ...pet, group, adoptionPoint }
     },
 
     getByGroupIdAndPetId: async (groupId, petId) => {
@@ -40,12 +63,26 @@ const petService = {
         })
     },
 
-    getByParam: async (param, skip = 0, take = 100) => {
-        return await prisma.pet.findMany({ 
-            where: { param },
+    getByParams: async (params, skip = 0, take = 100) => {
+        const pets = await prisma.pet.findMany({ 
+            where: { ...params },
             skip, 
             take
         })
+
+        if (!pets || !pets.length) {
+            return []
+        }
+
+        for (const pet of pets) {
+            const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId } })
+            const group = await prisma.group.findFirst({ where: { id: adoptionPoint.groupId } })
+
+            pet.adoptionPoint = adoptionPoint
+            pet.group = group
+        }
+
+        return pets
     },
     
     create: async(pet) => {
