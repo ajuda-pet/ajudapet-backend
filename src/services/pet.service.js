@@ -10,7 +10,12 @@ const petService = {
 
         for (const pet of pets) {
             const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId } })
-            const group = await prisma.group.findFirst({ where: { id: adoptionPoint.groupId } })
+            const group = await prisma.group.findFirst({ 
+                where: { id: adoptionPoint.groupId },
+                include: {
+                    socialMedia: true,
+                }
+            })
 
             pet.adoptionPoint = adoptionPoint
             pet.group = group
@@ -47,7 +52,12 @@ const petService = {
         }
 
         const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId }})
-        const group = await prisma.group.findFirst({ where: { id: adoptionPoint.groupId }})
+        const group = await prisma.group.findFirst({
+            where: { id: adoptionPoint.groupId },
+            include: {
+                socialMedia: true,
+            }
+        })
 
         return { ...pet, group, adoptionPoint }
     },
@@ -76,8 +86,13 @@ const petService = {
 
         for (const pet of pets) {
             const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId } })
-            const group = await prisma.group.findFirst({ where: { id: adoptionPoint.groupId } })
-
+            const group = await prisma.group.findFirst({
+                where: { id: adoptionPoint.groupId },
+                include: {
+                    socialMedia: true,
+                }
+            })
+            
             pet.adoptionPoint = adoptionPoint
             pet.group = group
         }
