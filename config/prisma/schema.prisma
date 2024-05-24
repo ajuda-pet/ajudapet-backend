@@ -94,6 +94,7 @@ model AdoptionPoint {
   addressState              addressStateEnum      @map("address_state")
   addressCity               String                @map("address_city")
   addressNumber             Int                   @map("address_number")
+  addressStreet             String                @map("adddress_street")
   addressNeighborhood       String                @map("address_neighborhood")
   addressCountry            String                @map("address_country")
   observation               String?                
