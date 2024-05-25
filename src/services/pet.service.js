@@ -101,7 +101,20 @@ const petService = {
     },
     
     create: async(pet) => {
-        return await prisma.pet.create({data: pet})
+        const newPet = await prisma.pet.create({data: pet})
+
+        const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId } })
+        const group = await prisma.group.findFirst({
+            where: { id: adoptionPoint.groupId },
+            include: {
+                socialMedia: true,
+            }
+        })
+
+        newPet.adoptionPoint = adoptionPoint
+        newPet.group = group
+
+        return newPet
     },
 
     updateById: async (id, props) => {
