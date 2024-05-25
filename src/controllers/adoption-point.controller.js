@@ -2,6 +2,8 @@ import responseEmoji from '../libraries/response-emoji.js'
 import { adoptionPointCreateSchema, adoptionPointUpdateSchema } from '../schemas/adoption-point.schema.js'
 import adoptionPointService from '../services/adoption-point.service.js'
 import { addressStateEnum } from '@prisma/client'
+import petController from './pet.controller.js'
+import petService from '../services/pet.service.js'
 
 const adoptionPointController = {
     get: async (request, response) => {
@@ -128,7 +130,12 @@ const adoptionPointController = {
     getByGroupToken: async (request, response) => {
         try {
             const { group } = request
-            const adoptionPoints = group.adoptionPoints 
+            const adoptionPoints = group.adoptionPoints
+
+            for (const point of adoptionPoints) {
+                    point.pets = await petService.getByAdoptionPointId(point.id)
+
+            }
 
             return response.status(200).send({ success: true, info: { adoptionPoints }, message: `Pontos de Adoção listado com sucesso. ${responseEmoji.success}`})
         }
