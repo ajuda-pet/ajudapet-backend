@@ -18,7 +18,12 @@ const adoptionPointService = {
     },
 
     create: async(adoptionPoint) => {
-        return await prisma.adoptionPoint.create({ data: adoptionPoint })
+        return await prisma.adoptionPoint.create({ 
+            data: adoptionPoint,
+            include: {
+                pets: true
+            }
+        })
     },
 
     updateById: async(id, props) => {
