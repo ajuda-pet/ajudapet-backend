@@ -33,7 +33,7 @@ const petService = {
     },
 
     getByGroupId: async(groupId, skip = 0, take = 100) => {
-        return await prisma.pet.findMany({
+        const pets = await prisma.pet.findMany({
             where: {
                 adoptionPoint: {
                     groupId: parseInt(groupId)
@@ -42,6 +42,26 @@ const petService = {
             skip, 
             take
         })
+
+
+        if (!pets || !pets.length) {
+            return []
+        }
+
+        for (const pet of pets) {
+            const adoptionPoint = await prisma.adoptionPoint.findFirst({ where: { id: pet.adoptionPointId } })
+            const group = await prisma.group.findFirst({
+                where: { id: adoptionPoint.groupId },
+                include: {
+                    socialMedia: true,
+                }
+            })
+
+            pet.adoptionPoint = adoptionPoint
+            pet.group = group
+        }
+
+        return pets
     },
 
     getById: async(id) => {
