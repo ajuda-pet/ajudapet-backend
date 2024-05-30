@@ -97,6 +97,8 @@ model AdoptionPoint {
   addressStreet             String                @map("adddress_street")
   addressNeighborhood       String                @map("address_neighborhood")
   addressCountry            String                @map("address_country")
+  lat                       Decimal                
+  lon                       Decimal     
   observation               String?                
   createdAt                 DateTime              @default(now())     @map("created_at")
   updatedAt                 DateTime?             @updatedAt          @map("updated_at")
