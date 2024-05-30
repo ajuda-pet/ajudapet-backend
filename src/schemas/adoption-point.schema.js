@@ -3,6 +3,8 @@ import Joi from 'joi'
 const adoptionPointCreateSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string(),
+    lat: Joi.number().required(),
+    lon: Joi.number().required(),
     postalCode: Joi.string().required(),
     addressState: Joi.string().required(),
     addressNeighborhood: Joi.string().required(),
@@ -17,6 +19,8 @@ const adoptionPointCreateSchema = Joi.object({
 const adoptionPointUpdateSchema = Joi.object({
     name: Joi.string(),
     description: Joi.string(),
+    lat: Joi.number().required(),
+    lon: Joi.number().required(),
     enable: Joi.boolean(),
     postalCode: Joi.string(),
     addressState: Joi.string(),
