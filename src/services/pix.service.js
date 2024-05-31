@@ -41,7 +41,7 @@ const pixService = {
     },
 
     updateByIdAndGroupId: async (id, groupId, data) => {
-        return await prisma.pix.updateMany({
+        return await prisma.pix.update({
             where: {
                 id: parseInt(id),
                 groupId: parseInt(groupId),

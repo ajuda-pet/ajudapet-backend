@@ -79,7 +79,7 @@ const pixController = {
                 return response.status(404).send({ success: false, message: `Registro PIX não encontrado. ${responseEmoji.fail}` })
             }
 
-            const updatedPix = await pixService.updateByIdAndGroupId(groupId, groupId, payload)
+            const updatedPix = await pixService.updateByIdAndGroupId(existingPix.id, groupId, payload)
 
             return response.status(200).send({ success: true, info: { pix: updatedPix }, message: `Registro PIX atualizado. ${responseEmoji.success}` })
         }
