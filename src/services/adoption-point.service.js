@@ -3,6 +3,9 @@ import { prisma } from '../../config/db-connect.js'
 const adoptionPointService = {
     get: async (skip = 0, take = 100) => {
         return await prisma.adoptionPoint.findMany({
+            include: {
+                pets: true
+            },
             skip,
             take
         })
