@@ -73,7 +73,7 @@ const pixController = {
                 return response.status(400).send({ success: false, message: error.details })
             }
 
-            const existingPix = await pixService.getByIdAndGroupId(groupId, groupId)
+            const existingPix = await pixService.getByGroupId(groupId)
 
             if (!existingPix) {
                 return response.status(404).send({ success: false, message: `Registro PIX não encontrado. ${responseEmoji.fail}` })
