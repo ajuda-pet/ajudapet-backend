@@ -34,7 +34,8 @@ const petQueryParamsSchema = Joi.object({
     gender: Joi.string(),
     species: Joi.string(),
     picture: Joi.string(),
-    addressCity: Joi.string()
+    addressCity: Joi.string(),
+    groupId: Joi.number()
 
 })
 
