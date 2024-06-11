@@ -94,11 +94,35 @@ const petService = {
     },
 
     getByParams: async (params, skip = 0, take = 100) => {
-        const pets = await prisma.pet.findMany({ 
-            where: { ...params },
-            skip, 
-            take
-        })
+        let pets
+        
+        if (params.addressCity) {
+            const addressCity = params.addressCity
+            delete params.addressCity
+
+            pets = await prisma.pet.findMany({
+                where: { 
+                    ...params,
+                    adoptionPoint: {
+                        addressCity: addressCity
+                    }
+                },
+                include: {
+                  adoptionPoint: true  
+                },
+                skip,
+                take
+            })
+        }
+
+        else {
+            pets = await prisma.pet.findMany({ 
+                where: { ...params },
+                skip, 
+                take
+            })
+        }
+
 
         if (!pets || !pets.length) {
             return []

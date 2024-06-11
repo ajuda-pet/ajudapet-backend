@@ -24,6 +24,18 @@ const petUpdateSchema = Joi.object({
     picture: Joi.string()
 })
 
-const petQueryParamsSchema = petUpdateSchema
+const petQueryParamsSchema = Joi.object({
+    name: Joi.string(),
+    adoptionPointId: Joi.number(),
+    enable: Joi.boolean(),
+    description: Joi.string(),
+    age: Joi.string(),
+    size: Joi.string(),
+    gender: Joi.string(),
+    species: Joi.string(),
+    picture: Joi.string(),
+    addressCity: Joi.string()
+
+})
 
 export { petCreateSchema, petUpdateSchema, petQueryParamsSchema }
