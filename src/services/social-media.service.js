@@ -11,7 +11,7 @@ const socialMediaService = {
         return await prisma.socialMedia.create({ data: socialMedia })
     },
 
-    updateById: async (id, plataform, props) => {
+    updateByIdAndPlataform: async (id, plataform, props) => {
         return await prisma.socialMedia.update({
             where: { id: parseInt(id), plataform },
             data: props

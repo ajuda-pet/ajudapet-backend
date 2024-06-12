@@ -10,23 +10,27 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DEV_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Group {
-  id            Int        @id @default(autoincrement())
-  name          String     @unique
-  email         String     @unique
-  description   String
-  phone         String
-  isActive      Boolean    @map("is_active")
-  password      String
-  cpf           String     @unique
-  createdAt     DateTime   @default(now())             @map("created_at")
-  updatedAt     DateTime?  @updatedAt                  @map("updated_at")
+  id              Int        @id @default(autoincrement())
+  name            String     @unique
+  email           String     @unique
+  description     String
+  phone           String
+  enable          Boolean    @default(false)    
+  password        String
+  cpf             String     @unique
+  picture         String?
+  createdAt       DateTime   @default(now())             @map("created_at")
+  updatedAt       DateTime?  @updatedAt                  @map("updated_at")
 
 
-  socialMedia SocialMedia[]
+  socialMedia     SocialMedia[]
+  adoptionPoints  AdoptionPoint[]
+  pix             Pix[]
+  invites         Invite[]
   @@map(name: "groups")
 }
 
@@ -41,10 +45,134 @@ model SocialMedia {
   group                 Group      @relation(fields: [groupId], references: [id])
   groupId               Int        @map("group_id")
   plataform             socialMediaEnum                    
-  username              String
+  account               String
   url                   String
   createdAt             DateTime             @default(now())     @map("created_at")
   updatedAt             DateTime?            @updatedAt          @map("updated_at")
 
   @@map(name: "social_media")
+}
+
+enum addressStateEnum {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PR
+  PB
+  PA
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SE
+  SP
+  TO
+}
+
+model AdoptionPoint {
+  id                        Int                   @id         @default(autoincrement())
+  name                      String                @unique
+  description               String?                 
+  group                     Group                 @relation(fields: [groupId], references: [id])
+  groupId                   Int                   @map("group_id")
+  enable                    Boolean               @default(true)
+  postalCode                String                @map("postal_code")
+  addressState              addressStateEnum      @map("address_state")
+  addressCity               String                @map("address_city")
+  addressNumber             Int                   @map("address_number")
+  addressStreet             String                @map("adddress_street")
+  addressNeighborhood       String                @map("address_neighborhood")
+  addressCountry            String                @map("address_country")
+  lat                       Decimal                
+  lon                       Decimal     
+  observation               String?                
+  createdAt                 DateTime              @default(now())     @map("created_at")
+  updatedAt                 DateTime?             @updatedAt          @map("updated_at")
+
+  pets                      Pet[]
+  @@map(name: "adoption_points")
+}
+
+enum agePetEnum { 
+  BABY 
+  ADULT 
+  OLD 
+}
+enum sizePetEnum { 
+  SMALL 
+  MEDIUM 
+  LARGE
+}
+
+enum genderPetEnum { 
+  MALE 
+  FEMALE 
+}
+
+enum speciesPetEnum { 
+  CAT 
+  DOG 
+}
+
+model Pet {
+  id                      Int                 @id  @default(autoincrement())
+  adoptionPoint           AdoptionPoint       @relation(fields: [adoptionPointId], references: [id])
+  adoptionPointId         Int                 @map("adoption_point_id")
+  name                    String
+  description             String?
+  enable                  Boolean             @default(true)
+  age                     agePetEnum
+  size                    sizePetEnum             
+  gender                  genderPetEnum
+  species                 speciesPetEnum  
+  picture                 String
+  createdAt               DateTime            @default(now())     @map("created_at")
+  updatedAt               DateTime?           @updatedAt          @map("updated_at")
+
+  @@map(name: "pets")
+}
+
+enum pixTypeEnum {
+  EMAIL
+  CPF
+  PHONE
+  CNPJ
+}
+
+model Pix {
+  id                      Int               @id  @default(autoincrement())
+  group                   Group             @relation(fields: [groupId], references: [id])
+  groupId                 Int               @map("group_id")
+  key                     String
+  qrcode                  String
+  type                    pixTypeEnum
+  createdAt               DateTime             @default(now())     @map("created_at")
+  updatedAt               DateTime?            @updatedAt          @map("updated_at")
+
+  @@map(name: "pix")
+}
+
+model Invite {
+  id          Int        @id @default(autoincrement())
+  host        Group?      @relation(fields: [hostId], references: [id])
+  hostId      Int        @map("host_id")
+  guestId     Int        @map("guest_id")   
+  createdAt   DateTime   @default(now())     @map("created_at")
+  updatedAt   DateTime?  @updatedAt          @map("updated_at")
+
+  @@map(name: "invites")
 }

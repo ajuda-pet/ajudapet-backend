@@ -24,7 +24,7 @@ const socialMediaController = {
                 return response.status(400).json({ success: false, message: 'Plataforma inválida. 😿' });
             }
 
-            const updates = await socialMediaService.updateById(socialMedia.id, plataform.toUpperCase(), payload)
+            const updates = await socialMediaService.updateByIdAndPlataform(socialMedia.id, plataform.toUpperCase(), payload)
             const socialMediaUpdated = { ...payload, ...updates }
 
             return response.status(200).send({ success: true, info: { socialMedia: socialMediaUpdated }, message: 'Query com sucesso. 😸'})
