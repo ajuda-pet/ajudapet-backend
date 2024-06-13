@@ -10,12 +10,18 @@ import noAuthPetRouter from './noauth/pets.router.js'
 import authPetRouter from './auth/pet.router.js'
 import noAuthPixRouter from './noauth/pix.router.js'
 import authAuthenticationRouter from './auth/middlewares/authentication.router.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const routes = (app) => {
     app.use(express.json())
+    
+    const noAuthRouters = [signupRouter, signinRouter, noAuthGroupRouter, noAuthAdoptionPointRouter, noAuthPetRouter, noAuthPixRouter]
+    const authRouters = [authGroupRouter, authAdoptionPointRouter, authPetRouter, authAuthenticationRouter]
 
-    app.use('/noauth', signupRouter, signinRouter, noAuthGroupRouter, noAuthAdoptionPointRouter, noAuthPetRouter, noAuthPixRouter)
-    app.use('/auth', authorizationMiddleware, authGroupRouter, authAdoptionPointRouter, authPetRouter, authAuthenticationRouter)
+    app.use('/noauth', ...noAuthRouters)
+    app.use('/auth', authorizationMiddleware, ...authRouters)
 }
 
 export { routes }
