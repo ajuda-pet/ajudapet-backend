@@ -7,7 +7,7 @@ import { expressAnalytics } from 'node-api-analytics'
 const app = express()
 
 if (process.env.ENV === 'prod') {
-    expressAnalytics(process.env.ANALYTICS_KEY) 
+    app.use(expressAnalytics(process.env.ANALYTICS_KEY))
 }
 
 app.use(bodyParser.json({ limit: '50mb'}))
