@@ -3,7 +3,7 @@ import Joi from 'joi'
 const socialMediaCreateSchema = Joi.object({
     plataform: Joi.string().required(),
     account: Joi.string().required(), 
-    url: Joi.string().required()
+    url: Joi.string()
 })
 
 const socialMediaUpdateSchema = Joi.object({
@@ -12,5 +12,3 @@ const socialMediaUpdateSchema = Joi.object({
 })
 
 export { socialMediaCreateSchema, socialMediaUpdateSchema }
-
-
