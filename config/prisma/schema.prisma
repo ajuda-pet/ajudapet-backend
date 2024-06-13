@@ -19,7 +19,7 @@ model Group {
   email           String     @unique
   description     String
   phone           String
-  enable          Boolean    @default(false)    
+  enable          Boolean    @default(true)    
   password        String
   cpf             String     @unique
   picture         String?
@@ -46,7 +46,7 @@ model SocialMedia {
   groupId               Int        @map("group_id")
   plataform             socialMediaEnum                    
   account               String
-  url                   String
+  url                   String?
   createdAt             DateTime             @default(now())     @map("created_at")
   updatedAt             DateTime?            @updatedAt          @map("updated_at")
 
