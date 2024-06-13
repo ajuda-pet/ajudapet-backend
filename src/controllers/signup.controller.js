@@ -3,6 +3,7 @@ import { groupCreateSchema } from '../schemas/group.schema.js'
 import groupService from '../services/group.service.js'
 import responseEmoji from '../libraries/response-emoji.js'
 import inviteService from '../services/invite.service.js'
+import socialMediaService from '../services/social-media.service.js'
 
 const signupController = {
     create: async (request, response) =>  {
@@ -32,7 +33,15 @@ const signupController = {
             }
 
             const passwordHashed = await encryptPassword(payload.password)
-            await groupService.create({...payload, password: passwordHashed })
+            const newGroup = await groupService.create({...payload, password: passwordHashed })
+
+            // Create whatsapp
+            await socialMediaService.create({
+                groupId: newGroup.id,
+                plataform: 'WHATSAPP',
+                account: newGroup.phone,
+            })
+
 
             return response.status(201).send({ success: true, message: 'Grupo criado com sucesso. 😸'})
         }
