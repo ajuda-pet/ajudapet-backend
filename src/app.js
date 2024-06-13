@@ -13,8 +13,8 @@ app.use(bodyParser.json({ limit: '50mb'}))
 app.use(cors())
 
 
-if (process.env.ENV == 'prod') {
-    app.use(expressAnalytics(process.env.ANALITYCS_KEY))
+if (process.env.ENV === 'prod') {
+    app.use(expressAnalytics(process.env.ANALYTICS_KEY))
 }
 
 routes(app)
