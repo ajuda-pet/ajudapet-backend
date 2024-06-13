@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import { routes } from './routes/index.js'
+import { expressAnalytics } from 'node-api-analytics'
 
 const app = express()
 
