@@ -4,6 +4,13 @@ import groupService from '../services/group.service.js'
 const groupController = {
     get: async (request, response) => {
         try {
+            const { name } = request.query
+            
+            if (name) {
+                const group = await groupService.getByName(name)
+                return response.status(200).send({ success: true, info: { group }, message: 'Query executada com sucesso. 😸' })
+            }
+
             const groups = await groupService.get()
 
             groups.forEach(group => {
