@@ -40,7 +40,12 @@ const groupService = {
     },
 
     getByName: async(name) => {
-        return await prisma.group.findUnique({ where: {name} })
+        return await prisma.group.findFirst({ where: {
+            name: {
+            equals: name,
+            mode: 'insensitive'
+            }
+        }})
     },
 
     getByCpf: async(cpf) => {
