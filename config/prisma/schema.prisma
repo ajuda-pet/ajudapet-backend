@@ -13,19 +13,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Group {
-  id              Int        @id @default(autoincrement())
-  name            String     @unique
-  email           String     @unique
-  description     String
-  phone           String
-  enable          Boolean    @default(true)    
-  password        String
-  cpf             String     @unique
-  picture         String?
-  createdAt       DateTime   @default(now())             @map("created_at")
-  updatedAt       DateTime?  @updatedAt                  @map("updated_at")
+enum groupCategoryEnum {
+  GROUP
+  ONG
+}
 
+
+model Group {
+  id              Int           @id @default(autoincrement())
+  name            String        @unique
+  email           String        @unique
+  description     String
+  enable          Boolean       @default(true)    
+  password        String
+  cpfCnpj         String        @unique @map("cpf_cnpj")
+  category        groupCategoryEnum @default(GROUP)
+  picture         String
+  createdAt       DateTime      @default(now())             @map("created_at")
+  updatedAt       DateTime?     @updatedAt                  @map("updated_at")
 
   socialMedia     SocialMedia[]
   adoptionPoints  AdoptionPoint[]
@@ -46,7 +51,6 @@ model SocialMedia {
   groupId               Int        @map("group_id")
   plataform             socialMediaEnum                    
   account               String
-  url                   String?
   createdAt             DateTime             @default(now())     @map("created_at")
   updatedAt             DateTime?            @updatedAt          @map("updated_at")
 
@@ -158,7 +162,7 @@ model Pix {
   group                   Group             @relation(fields: [groupId], references: [id])
   groupId                 Int               @map("group_id")
   key                     String
-  qrcode                  String
+  qrcode                  String?
   type                    pixTypeEnum
   createdAt               DateTime             @default(now())     @map("created_at")
   updatedAt               DateTime?            @updatedAt          @map("updated_at")
