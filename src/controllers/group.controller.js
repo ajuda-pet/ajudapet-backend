@@ -4,7 +4,7 @@ import groupService from '../services/group.service.js'
 const groupController = {
     get: async (request, response) => {
         try {
-            const { name, cpfCnpj } = request.query
+            const { name, cpfCnpj, email } = request.query
             
             if (name) {
                 const group = await groupService.getByName(name)
@@ -13,6 +13,11 @@ const groupController = {
 
             if (cpfCnpj) {
                 const group = await groupService.getByCpfCnpj(cpfCnpj)
+                return response.status(200).send({ success: true, info: { group }, message: 'Query executada com sucesso. 😸' })
+            }
+
+            if (email) {
+                const group = await groupService.getByEmail(email)
                 return response.status(200).send({ success: true, info: { group }, message: 'Query executada com sucesso. 😸' })
             }
 
