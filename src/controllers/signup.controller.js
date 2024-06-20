@@ -1,10 +1,12 @@
+import jwt from 'jsonwebtoken'
 import { encryptPassword } from '../libraries/password-crypto.js'
 import { groupCreateSchema } from '../schemas/group.schema.js'
 import groupService from '../services/group.service.js'
 import responseEmoji from '../libraries/response-emoji.js'
 import inviteService from '../services/invite.service.js'
 import socialMediaService from '../services/social-media.service.js'
-
+import { groupCategoryEnum } from '@prisma/client'
+import pixService from '../services/pix.service.js'
 const signupController = {
     create: async (request, response) =>  {
         try {
@@ -14,17 +16,21 @@ const signupController = {
                 return response.status(400).send({ success: false, message: error.details })
             }
 
-            const [groupByEmail, groupByCpf, groupByName] = await Promise.all([
+            const [groupByEmail, groupByCpfCnpj, groupByName] = await Promise.all([
                 groupService.getByEmail(payload.email),
-                groupService.getByCpf(payload.cpf),
+                groupService.getByCpfCnpj(payload.cpfCnpj),
                 groupService.getByName(payload.name)
             ])
-            
+
+            if (!groupCategoryEnum[payload.category]) {
+                return response.status(400).send({ success: false, message: `${responseEmoji.fail} Categoria do Grupo está incorreta!`})
+            }
+
             if (groupByEmail) {
                 return response.status(409).send({ success: false, message: 'Email já cadastrado. 😿'})
             }
 
-            if (groupByCpf) {
+            if (groupByCpfCnpj) {
                 return response.status(409).send({ success: false, message: 'CPF já cadastrado. 😿'})
             }
 
@@ -33,17 +39,38 @@ const signupController = {
             }
 
             const passwordHashed = await encryptPassword(payload.password)
-            const newGroup = await groupService.create({...payload, password: passwordHashed })
+            const newGroup = await groupService.create({
+                name: payload.name,
+                email: payload.email,
+                cpfCnpj: payload.cpfCnpj,
+                picture: payload.picture,
+                category: payload.category,
+                description: payload.description,
+                password: passwordHashed })
 
-            // Create whatsapp
             await socialMediaService.create({
                 groupId: newGroup.id,
                 plataform: 'WHATSAPP',
-                account: newGroup.phone,
+                account: payload.phone,
             })
 
+            await socialMediaService.create({
+                groupId: newGroup.id,
+                plataform: 'INSTAGRAM',
+                account: payload.instagram,
+            })
 
-            return response.status(201).send({ success: true, message: 'Grupo criado com sucesso. 😸'})
+            await pixService.create({
+                groupId: newGroup.id,
+                type: payload.pixType,
+                key: payload.pixKey
+            })
+
+            
+            const secretKey = process.env.JWT_SECRET_KEY
+            const token = jwt.sign({ groupId: newGroup.id }, secretKey, { expiresIn: '72h' })
+
+            return response.status(201).send({ success: true, info: { groupId: newGroup.id, token }, message: 'Grupo criado com sucesso. 😸'})
         }
 
         catch (error) {

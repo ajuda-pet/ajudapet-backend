@@ -4,11 +4,15 @@ const groupCreateSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string().required(),
     email: Joi.string().required(),
-    phone: Joi.string().required(),
     password: Joi.string().required(),
-    cpf: Joi.string().required(),
+    picture: Joi.string().required(),
+    cpfCnpj: Joi.string().required(),
     enable: Joi.boolean(),
-    picture: Joi.string(),
+    category: Joi.string(),
+    instagram: Joi.string().required(),
+    phone: Joi.string().required(),
+    pixType: Joi.string().required(),
+    pixKey: Joi.string().required()
 })
 
 
