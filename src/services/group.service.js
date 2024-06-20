@@ -48,8 +48,8 @@ const groupService = {
         }})
     },
 
-    getByCpf: async(cpf) => {
-        return await prisma.group.findUnique({ where: {cpf} })
+    getByCpfCnpj: async (cpfCnpj) => {
+        return await prisma.group.findUnique({ where: {cpfCnpj} })
     },
 
     updatedById: async (id, props) => {
