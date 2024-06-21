@@ -4,10 +4,20 @@ import groupService from '../services/group.service.js'
 const groupController = {
     get: async (request, response) => {
         try {
-            const { name } = request.query
+            const { name, cpfCnpj, email } = request.query
             
             if (name) {
                 const group = await groupService.getByName(name)
+                return response.status(200).send({ success: true, info: { group }, message: 'Query executada com sucesso. 😸' })
+            }
+
+            if (cpfCnpj) {
+                const group = await groupService.getByCpfCnpj(cpfCnpj)
+                return response.status(200).send({ success: true, info: { group }, message: 'Query executada com sucesso. 😸' })
+            }
+
+            if (email) {
+                const group = await groupService.getByEmail(email)
                 return response.status(200).send({ success: true, info: { group }, message: 'Query executada com sucesso. 😸' })
             }
 
@@ -56,7 +66,7 @@ const groupController = {
 
             const [groupByEmail, groupByCpf, groupByName] = await Promise.all([
                 groupService.getByEmail(payload.email || ''),
-                groupService.getByCpf(payload.cpf || ''),
+                groupService.getByCpfCnpj(payload.cpfCnpj || ''),
                 groupService.getByName(payload.name || '')
             ])
 
